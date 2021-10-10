@@ -2,53 +2,53 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 
 export default class OAuth2Helper {
-	#information = null;
-	getInformation() { return this.#information; }
+    #information = null;
+    getInformation() { return this.#information; }
 
-	constructor(information) {
-		// if () throw ''; // FIXME information class가 맞는지 검사
+    constructor(information) {
+        // if () throw ''; // FIXME information class가 맞는지 검사
 
-		this.#information = information;
-	}
-	
-	authorize() {
-		const domain = this.getInformation().getDomain();
-		const redirectUri = this.getInformation().getRedirectUri();
-		const id = this.getInformation().getId();
-		const scope = this.getInformation().getScope();
+        this.#information = information;
+    }
+    
+    authorize() {
+        const domain = this.getInformation().getDomain();
+        const redirectUri = this.getInformation().getRedirectUri();
+        const id = this.getInformation().getId();
+        const scope = this.getInformation().getScope();
 
-		return `${domain}/oauth2/authorize?client_id=${id}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}`;
-	}
+        return `${domain}/oauth2/authorize?client_id=${id}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}`;
+    }
 
-	async token(parameters) {
-		if (typeof parameters !== 'object' || typeof parameters.grant_type !== 'string') throw 'Wrong parameter #1: parameters';
+    async token(parameters) {
+        if (typeof parameters !== 'object' || typeof parameters.grant_type !== 'string') throw 'Wrong parameter #1: parameters';
 
-		const domain = this.getInformation().getDomain();
-		const redirectUri = this.getInformation().getRedirectUri();
-		const id = this.getInformation().getId();
-		const secret = this.getInformation().getSecret();
-		const refreshTokenPath = this.getInformation().getRefreshTokenPath();
+        const domain = this.getInformation().getDomain();
+        const redirectUri = this.getInformation().getRedirectUri();
+        const id = this.getInformation().getId();
+        const secret = this.getInformation().getSecret();
+        const refreshTokenPath = this.getInformation().getRefreshTokenPath();
 
-		let properties = [];
-		Object.entries(parameters).forEach(([key, value]) => {
-			properties.push(`${key}=${value}`);
-		});
-		if (parameters.grant_type === 'authorization_code') {
-			properties.push(`redirect_uri=${redirectUri}`);
-		}
+        let properties = [];
+        Object.entries(parameters).forEach(([key, value]) => {
+            properties.push(`${key}=${value}`);
+        });
+        if (parameters.grant_type === 'authorization_code') {
+            properties.push(`redirect_uri=${redirectUri}`);
+        }
 
-		const queries = properties.join('&');
+        const queries = properties.join('&');
 
-		let response = await fetch(`${domain}/oauth2/token`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: `client_id=${id}&client_secret=${secret}&${queries}`
-		}); let body = await response.json();
+        let response = await fetch(`${domain}/oauth2/token`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `client_id=${id}&client_secret=${secret}&${queries}`
+        }); let body = await response.json();
 
-		const refreshToken = body['refresh_token'];
-		
-		fs.writeFileSync(refreshTokenPath, refreshToken);
+        const refreshToken = body['refresh_token'];
+        
+        fs.writeFileSync(refreshTokenPath, refreshToken);
 
-		return body;
-	}
+        return body;
+    }
 }

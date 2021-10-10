@@ -19,8 +19,8 @@ BotInteraction.add(['!명령어', '!도움'], () => `멀랑!`);
 BotInteraction.add(['!시간', '!날짜'], () => `${new Date()}`);
 BotInteraction.add(['ㅋ'], (info, interaction) => interaction.emote('AwesomeFace'));
 BotInteraction.add(['멍멍', '컹컹'], () => {
-	barkCount += 1;
-	return `왈왈 ${barkCount}트`;
+    barkCount += 1;
+    return `왈왈 ${barkCount}트`;
 });
 BotInteraction.add(['twitch:fstflrWink', 'discord:fstflrWink', 'discord:localWink'], (info, interaction) => interaction.emote('Wink'));
 BotInteraction.add(['twitch:fstflrJookchang', 'discord:fstflrJookchang', 'discord:localJookchang'], () => `아파!`);
@@ -29,27 +29,27 @@ BotInteraction.add(['twitch:fstflrAwesomeFace', 'discord:fstflrAwesomeFace', 'di
 BotInteraction.add(['discord:localFloorTrail'], (info, interaction) => interaction.emote('FloorTrail'));
 
 TwitchBot.add({
-	redirectUri: 'http://localhost/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process',
-	id: 'vv0bl9s6i4mcorbj8u2xnyxc1g42d3',
-	scope: [
-		'channel:manage:broadcast',
-		'channel:moderate',
-		'chat:edit',
-		'chat:read',
-		'whispers:read',
-		'whispers:edit'
-	],
-	username: 'bot_shiba_inu',
-	channel: 'fstflr446712'
+    redirectUri: 'http://localhost/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process',
+    id: 'vv0bl9s6i4mcorbj8u2xnyxc1g42d3',
+    scope: [
+        'channel:manage:broadcast',
+        'channel:moderate',
+        'chat:edit',
+        'chat:read',
+        'whispers:read',
+        'whispers:edit'
+    ],
+    username: 'bot_shiba_inu',
+    channel: 'fstflr446712'
 });
 
 DiscordBot.add({
-	redirectUri: 'http://localhost/login/discord/538667375537684481/process',
-	id: '538667375537684481',
-	scope: [
-		// 'webhook.incoming', // FIXME 웹훅 지우는 법 찾아볼 것
-		'messages.read'
-	]
+    redirectUri: 'http://localhost/login/discord/538667375537684481/process',
+    id: '538667375537684481',
+    scope: [
+        // 'webhook.incoming', // FIXME 웹훅 지우는 법 찾아볼 것
+        'messages.read'
+    ]
 });
 
 const web = express();
@@ -57,5 +57,5 @@ web.use('/', botRouter);
 
 const port = 80;
 web.listen(port, () => {
-	console.log(`web server running in port ${port}`);
+    console.log(`web server running in port ${port}`);
 });

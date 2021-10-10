@@ -24,9 +24,9 @@ export default class OAuth2Information {
     }
 
     constructor(domain, redirectUri, id, scopeList) {
-		if (typeof domain !== 'string' || !domain.match('https?://[^/#%=]+')) throw 'Wrong value of parameter: domain';
-		if (typeof redirectUri !== 'string' || !redirectUri.match('https?://[^/#%=]+')) throw 'Wrong value of parameter: redirectUri';
-		if (typeof id !== 'string' || id.length == 0) throw 'Wrong value of parameter: id';
+        if (typeof domain !== 'string' || !domain.match('https?://[^/#%=]+')) throw 'Wrong value of parameter: domain';
+        if (typeof redirectUri !== 'string' || !redirectUri.match('https?://[^/#%=]+')) throw 'Wrong value of parameter: redirectUri';
+        if (typeof id !== 'string' || id.length == 0) throw 'Wrong value of parameter: id';
 
         this.#domain = domain;
         this.#redirectUri = redirectUri;

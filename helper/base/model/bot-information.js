@@ -14,11 +14,11 @@ export default class BotInformation extends OAuth2Information {
     getDestroyFunction() { return this.#destroyFunction; }
 
     constructor(platform, domain, redirectUri, id, scope, connectFunction, initializeFunction, destroyFunction) {
-		super(domain, redirectUri, id, scope);
+        super(domain, redirectUri, id, scope);
         
-		if (typeof connectFunction !== 'function') throw 'Wrong value of parameter: connectFunction';
-		if (typeof initializeFunction !== 'function') throw 'Wrong value of parameter: initializeFunction';
-		if (typeof destroyFunction !== 'function') throw 'Wrong value of parameter: destroyFunction';
+        if (typeof connectFunction !== 'function') throw 'Wrong value of parameter: connectFunction';
+        if (typeof initializeFunction !== 'function') throw 'Wrong value of parameter: initializeFunction';
+        if (typeof destroyFunction !== 'function') throw 'Wrong value of parameter: destroyFunction';
 
         this.#platform = platform;
         this.#connectFunction = connectFunction;
@@ -26,19 +26,19 @@ export default class BotInformation extends OAuth2Information {
         this.#destroyFunction = destroyFunction;
     }
 
-	getSecretPath() {
-		const cwd = process.cwd().replace('\\', '/');
-		const platform = this.getPlatform();
+    getSecretPath() {
+        const cwd = process.cwd().replace('\\', '/');
+        const platform = this.getPlatform();
         const id = this.getId();
 
-		return `${cwd}/data/secret/${platform}-${id}.txt`;
-	}
+        return `${cwd}/data/secret/${platform}-${id}.txt`;
+    }
 
-	getRefreshTokenPath() {
-		const cwd = process.cwd().replace('\\', '/');
-		const platform = this.getPlatform();
+    getRefreshTokenPath() {
+        const cwd = process.cwd().replace('\\', '/');
+        const platform = this.getPlatform();
         const id = this.getId();
 
-		return `${cwd}/data/refresh/${platform}-${id}.txt`;
-	}
+        return `${cwd}/data/refresh/${platform}-${id}.txt`;
+    }
 }
