@@ -2,20 +2,16 @@ import express from 'express';
 
 import BotHelper from './bot-helper.js';
 
-const botRouter = express.Router();
+const botManagementRouter = express.Router();
 
-botRouter.get('/', (request, response) => {
-    response.send('Hello, world!');
-});
-
-botRouter.get('/login/:platform/:id', (request, response) => {
+botManagementRouter.get('/login/:platform/:id', (request, response) => {
     const platform = request.params.platform;
     const id = request.params.id;
 
     response.redirect(BotHelper.get(platform, id).authorize());
 });
 
-botRouter.get('/login/:platform/:id/process', (request, response) => {
+botManagementRouter.get('/login/:platform/:id/process', (request, response) => {
     const platform = request.params.platform;
     const id = request.params.id;
     
@@ -32,4 +28,4 @@ botRouter.get('/login/:platform/:id/process', (request, response) => {
     });
 });
 
-export default botRouter;
+export default botManagementRouter;

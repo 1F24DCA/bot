@@ -2,7 +2,7 @@ import express from 'express';
 import https from 'https';
 import fs from 'fs';
 
-import botRouter from './helper/base/bot-router.js';
+import botManagementRouter from './helper/base/bot-management-router.js';
 
 import BotInteraction from './helper/interaction/base/bot-interaction.js';
 import TwitchBot from './helper/twitch-bot.js';
@@ -55,18 +55,29 @@ DiscordBot.add({
 });
 
 const web = express();
-web.use('/', botRouter);
+web.get('/', (request, response) => {
+    response.send('Hello, world!');
+});
 
-// const port = 80;
-// web.listen(port, () => {
-//     console.log(`web server running in port ${port}`);
+// FIXME 환경설정 분리 (local 및 production)
+// const webPort = 80;
+// web.listen(webPort, () => {
+//     console.log(`web server running in port ${webPort}`);
 // });
 
-const port = 443;
+const webPort = 443;
 https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
-}, web).listen(port, () => {
-    console.log(`web server running in port ${port}`);
+}, web).listen(webPort, () => {
+    console.log(`web server running in port ${webPort}`);
+});
+
+const management = express();
+management.use('/', botManagementRouter);
+
+const managementPort = 9999;
+management.listen(managementPort, () => {
+    console.log(`management server running in port ${managementPort}`);
 });
