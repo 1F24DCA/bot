@@ -13,6 +13,24 @@ import DiscordBot from './lib/discord-bot.js';
 // 트윕/투네이션 API 엮어서 통합관리 시스템 구축: https://twip.kr/api/event 등...
 // 몰라 기억안나 나중에 써야지~
 
+let httpsServerOptions = null;
+let domain = 'http://localhost';
+let webPort = 80;
+let managementPort = 9999;
+
+if (process.platform === 'linux') {
+    httpsServerOptions = {
+        key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
+    };
+    domain = 'https://shiba.firstfloor.pe.kr';
+    webPort = 443;
+
+    console.log('Linux detected, changing properties to production setting');
+}
+
+
 let barkCount = 0;
 
 BotInteraction.empty();
@@ -30,7 +48,7 @@ BotInteraction.add(['twitch:fstflrAwesomeFace', 'discord:fstflrAwesomeFace', 'di
 BotInteraction.add(['discord:localFloorTrail'], (info, interaction) => interaction.emote('FloorTrail'));
 
 TwitchBot.add({
-    redirectUri: 'https://shiba.firstfloor.pe.kr:9999/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process',
+    redirectUri: `${domain}:9999/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process`,
     id: 'vv0bl9s6i4mcorbj8u2xnyxc1g42d3',
     scope: [
         'channel:manage:broadcast',
@@ -45,7 +63,7 @@ TwitchBot.add({
 });
 
 DiscordBot.add({
-    redirectUri: 'https://shiba.firstfloor.pe.kr:9999/login/discord/538667375537684481/process',
+    redirectUri: `${domain}:9999/login/discord/538667375537684481/process`,
     id: '538667375537684481',
     scope: [
         // 'webhook.incoming', // FIXME 웹훅 지우는 법 찾아볼 것
@@ -53,28 +71,15 @@ DiscordBot.add({
     ]
 });
 
-// FIXME 환경설정 분리 (local 및 production) - 위의 redirectUri 포함
-const httpsServerOptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
-};
-
-const web = express();
+let web = express();
 web.get('/', (request, response) => response.send('Hello, world!'));
 
-const webPort = 443;
-const webServer = https.createServer(httpsServerOptions, web);
-webServer.listen(webPort, () => {
-    console.log(`web server running in port ${webPort}`);
-});
+if (httpsServerOptions !== null) web = https.createServer(httpsServerOptions, web);
+web.listen(webPort, () => console.log(`web server running in port ${webPort}`));
 
-const management = express();
-management.get('/', (request, response) => response.redirect('https://shiba.firstfloor.pe.kr/'));
+let management = express();
+management.get('/', (request, response) => response.redirect(domain));
 management.use('/', botManagementRouter);
 
-const managementPort = 9999;
-const managementServer = https.createServer(httpsServerOptions, management);
-managementServer.listen(managementPort, () => {
-    console.log(`management server running in port ${managementPort}`);
-});
+if (httpsServerOptions !== null) management = https.createServer(httpsServerOptions, management);
+management.listen(managementPort, () => console.log(`management server running in port ${managementPort}`));
