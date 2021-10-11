@@ -31,7 +31,7 @@ BotInteraction.add(['twitch:fstflrAwesomeFace', 'discord:fstflrAwesomeFace', 'di
 BotInteraction.add(['discord:localFloorTrail'], (info, interaction) => interaction.emote('FloorTrail'));
 
 TwitchBot.add({
-    redirectUri: 'http://localhost/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process',
+    redirectUri: 'https://shiba.firstfloor.pe.kr:9999/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process',
     id: 'vv0bl9s6i4mcorbj8u2xnyxc1g42d3',
     scope: [
         'channel:manage:broadcast',
@@ -46,7 +46,7 @@ TwitchBot.add({
 });
 
 DiscordBot.add({
-    redirectUri: 'http://localhost/login/discord/538667375537684481/process',
+    redirectUri: 'https://shiba.firstfloor.pe.kr:9999/login/discord/538667375537684481/process',
     id: '538667375537684481',
     scope: [
         // 'webhook.incoming', // FIXME 웹훅 지우는 법 찾아볼 것
@@ -54,16 +54,11 @@ DiscordBot.add({
     ]
 });
 
+// FIXME 환경설정 분리 (local 및 production) - 위의 redirectUri 포함
 const web = express();
 web.get('/', (request, response) => {
     response.send('Hello, world!');
 });
-
-// FIXME 환경설정 분리 (local 및 production)
-// const webPort = 80;
-// web.listen(webPort, () => {
-//     console.log(`web server running in port ${webPort}`);
-// });
 
 const webPort = 443;
 https.createServer({
@@ -78,6 +73,10 @@ const management = express();
 management.use('/', botManagementRouter);
 
 const managementPort = 9999;
-management.listen(managementPort, () => {
+https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
+}, web).listen(managementPort, () => {
     console.log(`management server running in port ${managementPort}`);
 });
