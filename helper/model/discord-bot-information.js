@@ -2,7 +2,7 @@ import fs from 'fs';
 import discordjs from 'discord.js';
 
 import BotInformation from '../base/model/bot-information.js';
-import DiscordBotInteraction from '../interaction/discord-bot-interaction.js';
+import DiscordBotInteraction from '../discord-bot-interaction.js';
 
 export default class DiscordBotInformation extends BotInformation {
     getBotTokenPath() {

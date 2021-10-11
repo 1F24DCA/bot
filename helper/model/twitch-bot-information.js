@@ -1,7 +1,7 @@
 import tmijs from 'tmi.js';
 
 import BotInformation from '../base/model/bot-information.js';
-import TwitchBotInteraction from '../interaction/twitch-bot-interaction.js';
+import TwitchBotInteraction from '../twitch-bot-interaction.js';
 
 export default class TwitchBotInformation extends BotInformation {
     constructor(redirectUri, id, scope, username, channel) {
