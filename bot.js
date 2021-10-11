@@ -4,7 +4,7 @@ import fs from 'fs';
 
 import botManagementRouter from './helper/base/bot-management-router.js';
 
-import BotInteraction from './helper/interaction/base/bot-interaction.js';
+import BotInteraction from './helper/base/bot-interaction.js';
 import TwitchBot from './helper/twitch-bot.js';
 import DiscordBot from './helper/discord-bot.js';
 
