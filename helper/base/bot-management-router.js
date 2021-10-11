@@ -4,6 +4,10 @@ import BotHelper from './bot-helper.js';
 
 const botManagementRouter = express.Router();
 
+botManagementRouter.get('/', (request, response) => {
+    response.redirect('https://shiba.firstfloor.pe.kr/');
+});
+
 botManagementRouter.get('/login/:platform/:id', (request, response) => {
     const platform = request.params.platform;
     const id = request.params.id;
