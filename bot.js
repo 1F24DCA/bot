@@ -77,6 +77,6 @@ https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
-}, web).listen(managementPort, () => {
+}, management).listen(managementPort, () => {
     console.log(`management server running in port ${managementPort}`);
 });
