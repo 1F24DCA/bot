@@ -48,7 +48,7 @@ BotInteraction.add(['twitch:fstflrAwesomeFace', 'discord:fstflrAwesomeFace', 'di
 BotInteraction.add(['discord:localFloorTrail'], (info, interaction) => interaction.emote('FloorTrail'));
 
 TwitchBot.add({
-    redirectUri: `${WebManager.getDomain()}:9999/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process`,
+    redirectUri: `${WebManager.getDomain()}:${WebManager.getManagerPort()}/login/twitch/vv0bl9s6i4mcorbj8u2xnyxc1g42d3/process`,
     id: 'vv0bl9s6i4mcorbj8u2xnyxc1g42d3',
     scope: [
         'channel:manage:broadcast',
@@ -63,7 +63,7 @@ TwitchBot.add({
 });
 
 DiscordBot.add({
-    redirectUri: `${WebManager.getDomain()}:9999/login/discord/538667375537684481/process`,
+    redirectUri: `${WebManager.getDomain()}:${WebManager.getManagerPort()}/login/discord/538667375537684481/process`,
     id: '538667375537684481',
     scope: [
         // 'webhook.incoming', // FIXME 웹훅 지우는 법 찾아볼 것
