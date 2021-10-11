@@ -1,4 +1,6 @@
 import express from 'express';
+import https from 'https';
+import fs from 'fs';
 
 import botRouter from './helper/base/bot-router.js';
 
@@ -55,7 +57,16 @@ DiscordBot.add({
 const web = express();
 web.use('/', botRouter);
 
-const port = 80;
-web.listen(port, () => {
+// const port = 80;
+// web.listen(port, () => {
+//     console.log(`web server running in port ${port}`);
+// });
+
+const port = 443;
+https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
+}, web).listen(port, () => {
     console.log(`web server running in port ${port}`);
 });
