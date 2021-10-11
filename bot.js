@@ -11,6 +11,7 @@ import DiscordBot from './lib/discord-bot.js';
 // DB연결: 유저의 ID를 저장하여, 트위치와 디스코드간의 크로스플랫폼 데이터 공유 및 채팅 로그 기록 등
 // 동적 명령어 C/R/U/D: 파일 분리 및 리프레시 엔드포인트 생성, 동적으로 명령어 추가, 조회, 수정, 삭제가 가능하도록 작성
 // 트윕/투네이션 API 엮어서 통합관리 시스템 구축: https://twip.kr/api/event 등...
+// Express 관련 모듈 사용을 좀 더 단순하게 다룰수 있게 만드는 클래스 (Static 메서드로만 구성) 생성
 // 몰라 기억안나 나중에 써야지~
 
 let httpsServerOptions = null;
