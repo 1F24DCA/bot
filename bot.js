@@ -11,7 +11,6 @@ import DiscordBot from './helper/discord-bot.js';
 // DB연결: 유저의 ID를 저장하여, 트위치와 디스코드간의 크로스플랫폼 데이터 공유 및 채팅 로그 기록 등
 // 동적 명령어 C/R/U/D: 파일 분리 및 리프레시 엔드포인트 생성, 동적으로 명령어 추가, 조회, 수정, 삭제가 가능하도록 작성
 // 트윕/투네이션 API 엮어서 통합관리 시스템 구축: https://twip.kr/api/event 등...
-// 현재 트위치/디스코드 봇 최대 1개까지만 등록가능한데, secret path 및 platform 등 종속적인 키값들 id기반으로 생성되게끔 변경
 // 몰라 기억안나 나중에 써야지~
 
 let barkCount = 0;
@@ -55,28 +54,27 @@ DiscordBot.add({
 });
 
 // FIXME 환경설정 분리 (local 및 production) - 위의 redirectUri 포함
-const web = express();
-web.get('/', (request, response) => {
-    response.send('Hello, world!');
-});
-
-const webPort = 443;
-https.createServer({
+const httpsServerOptions = {
     key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
-}, web).listen(webPort, () => {
+};
+
+const web = express();
+web.get('/', (request, response) => response.send('Hello, world!'));
+
+const webPort = 443;
+const webServer = https.createServer(httpsServerOptions, web);
+webServer.listen(webPort, () => {
     console.log(`web server running in port ${webPort}`);
 });
 
 const management = express();
+management.get('/', (request, response) => response.redirect('https://shiba.firstfloor.pe.kr/'));
 management.use('/', botManagementRouter);
 
 const managementPort = 9999;
-https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/shiba.firstfloor.pe.kr/chain.pem')
-}, management).listen(managementPort, () => {
+const managementServer = https.createServer(httpsServerOptions, management);
+managementServer.listen(managementPort, () => {
     console.log(`management server running in port ${managementPort}`);
 });
