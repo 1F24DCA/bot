@@ -3,3 +3,6 @@ data/
 
 # 모듈 파일들은 npm install로 받아올 수 있으므로 깃에 저장하지 않음
 node_modules/
+
+# IDE 설정 파일 등 개발 환경에 종속적인 설정 파일 등은 깃에 저장하지 않음
+.idea
