@@ -1,7 +1,7 @@
 import express from 'express';
 import https from 'https';
 
-import BotHelper from "./bot-helper";
+import BotHelper from "./bot-helper.js";
 
 const managerRouter = express.Router();
 managerRouter.get('/login/:platform/:id', (request, response) => {
