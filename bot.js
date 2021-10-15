@@ -1,11 +1,10 @@
 import fs from 'fs';
 
-import WebManager from './lib/base/web-manager.js';
-import WebOption from './lib/base/model/web-option.js';
+import WebManager, { WebOption } from './modules/base/web-manager.js';
 
-import BotInteraction from './lib/base/bot-interaction.js';
-import TwitchBot from './lib/twitch-bot.js';
-import DiscordBot from './lib/discord-bot.js';
+import { BotInteraction } from './modules/base/bot-helper.js';
+import TwitchBot from './modules/twitch-bot.js';
+import DiscordBot from './modules/discord-bot.js';
 
 // DB연결: 유저의 ID를 저장하여, 트위치와 디스코드간의 크로스플랫폼 데이터 공유 및 채팅 로그 기록 등
 // 동적 명령어 C/R/U/D: 파일 분리 및 리프레시 엔드포인트 생성, 동적으로 명령어 추가, 조회, 수정, 삭제가 가능하도록 작성

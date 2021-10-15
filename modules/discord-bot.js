@@ -1,9 +1,7 @@
 import fs from 'fs';
 import discordjs from 'discord.js';
 
-import BotHelper from './base/bot-helper.js';
-import BotInformation from './base/model/bot-information.js';
-import BotInteraction from './base/bot-interaction.js';
+import BotHelper, { BotInformation, BotInteraction } from './base/bot-helper.js';
 
 export default class DiscordBot extends BotHelper {
     static add(parameters) {
