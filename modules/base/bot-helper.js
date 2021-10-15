@@ -1,7 +1,6 @@
 import fs from 'fs';
 
-import OAuth2Helper from './oauth2-helper.js';
-import OAuth2Information from "./model/oauth2-information";
+import OAuth2Helper, { OAuth2Information } from './oauth2-helper.js';
 
 export default class BotHelper extends OAuth2Helper {
     static #botHelperList = {};
