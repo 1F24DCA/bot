@@ -44,10 +44,10 @@ export default class WebManager {
         if (web !== null) web.close();
         if (manager !== null) manager.close();
 
-        web = WebManager.#web = express();
-        web.get('/', (request, response) => response.write('Hello, world!'));
+        web = express();
+        web.get('/', (request, response) => response.send('Hello, world!'));
         if (option.hasManagerPort()) {
-            manager = WebManager.#manager = express();
+            manager = express();
             manager.get('/', (request, response) => {
                 const domain = option.getDomain();
                 const port = option.getWebPort();
@@ -60,9 +60,9 @@ export default class WebManager {
 
         manager.use('/', managerRouter);
 
-        web = WebManager.#web = WebManager.listen(web, option.getWebPort(), option.getSslOption());
+        WebManager.#web = WebManager.listen(web, option.getWebPort(), option.getSslOption());
         if (option.hasManagerPort()) {
-            manager = WebManager.#manager = WebManager.listen(manager, option.getManagerPort(), option.getSslOption());
+            WebManager.#manager = WebManager.listen(manager, option.getManagerPort(), option.getSslOption());
         }
     }
 
